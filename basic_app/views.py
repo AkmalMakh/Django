@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from basic_app.forms import UserForm,UserProfileInfoForm
-
-
+from basic_app.models import UserProfileInfo
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -11,6 +10,17 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 def index(request):
     return render(request,'basic_app/index.html')
+
+@login_required
+def user_info(request):
+    user = request.user
+    id = user.username
+    print("hell", id)
+    context  = {
+        "user_info": user
+    }
+    return render(request, 'basic_app/userinfo.html', context)
+
 
 @login_required
 def special(request):
@@ -26,7 +36,7 @@ def user_logout(request):
     return HttpResponseRedirect(reverse('index'))
 
 def register(request):
-
+    print("hello")
     registered = False
 
     if request.method == 'POST':
